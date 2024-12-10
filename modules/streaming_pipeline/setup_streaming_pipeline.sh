@@ -106,10 +106,37 @@ install_dependencies() {
     # Install GNU Make 4.3
     if ! command_exists make; then
         echo "GNU Make is not installed. Installing version 4.3..."
-        safe_package_install make=4.3-*
+
+        # Download and install make 4.3
+        wget https://ftp.gnu.org/gnu/make/make-4.3.tar.gz -P /tmp
+        cd /tmp
+        tar -xzvf make-4.3.tar.gz
+        cd make-4.3
+        ./configure
+        make
+        sudo make install
+
+        # Update PATH to prioritize /usr/local/bin
+        export PATH="/usr/local/bin:$PATH"
+        echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+
     elif [[ $(make --version | head -n 1) != *"4.3"* ]]; then
         pause_and_continue "GNU Make version is not 4.3. Updating to version 4.3..."
-        safe_package_install make=4.3-*
+
+        # Download and install make 4.3
+        wget https://ftp.gnu.org/gnu/make/make-4.3.tar.gz -P /tmp
+        cd /tmp
+        tar -xzvf make-4.3.tar.gz
+        cd make-4.3
+        ./configure
+        make
+        sudo make install
+
+        # Update PATH to prioritize /usr/local/bin
+        export PATH="/usr/local/bin:$PATH"
+        echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
     else
         pause_and_continue "GNU Make version 4.3 is already installed."
     fi
