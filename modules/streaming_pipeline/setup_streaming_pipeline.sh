@@ -106,10 +106,10 @@ install_dependencies() {
     # Install GNU Make 4.3
     if ! command_exists make; then
         echo "GNU Make is not installed. Installing version 4.3..."
-        safe_package_install make=4.3*
-    elif [[ $(make --version | head -n 1) != *"4.3" ]]; then
+        safe_package_install make=4.3-*
+    elif [[ $(make --version | head -n 1) != *"4.3"* ]]; then
         pause_and_continue "GNU Make version is not 4.3. Updating to version 4.3..."
-        safe_package_install make=4.3*
+        safe_package_install make=4.3-*
     else
         pause_and_continue "GNU Make version 4.3 is already installed."
     fi
