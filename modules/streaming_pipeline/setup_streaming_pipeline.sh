@@ -83,24 +83,24 @@ install_dependencies() {
 
     # Install Poetry
     if ! command_exists poetry; then
-      echo "Poetry is not installed. Installing Poetry..."
-      curl -sSL https://install.python-poetry.org | python3.10 - || error_handle "Failed to install Poetry."
+        echo "Poetry is not installed. Installing Poetry..."
+        curl -sSL https://install.python-poetry.org | python3.10 - || error_handle "Failed to install Poetry."
 
-      # Add Poetry to PATH
-      echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-      source ~/.bashrc  # Reload the bash configuration to update PATH
+        # Add Poetry to PATH
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc  # Reload the bash configuration to update PATH
 
-      poetry self update 1.5.1 || error_hpoandle "Failed to update Poetry to version 1.5.1."
-      pause_and_continue "Poetry installed successfully."
-    else
-      current_version=$(poetry --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+')
-      if [ "$current_version" != "1.5.1" ]; then
-        echo "Updating Poetry to version 1.5.1..."
         poetry self update 1.5.1 || error_handle "Failed to update Poetry to version 1.5.1."
-        pause_and_continue "Poetry updated successfully."
-      else
-        pause_and_continue "Poetry version 1.5.1 is already installed. Everything is fine!"
-      fi
+        pause_and_continue "Poetry installed successfully."
+    else
+        current_version=$(poetry --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+')
+        if [ "$current_version" != "1.5.1" ]; then
+            echo "Updating Poetry to version 1.5.1..."
+            poetry self update 1.5.1 || error_handle "Failed to update Poetry to version 1.5.1."
+            pause_and_continue "Poetry updated successfully."
+        else
+            pause_and_continue "Poetry version 1.5.1 is already installed. Everything is fine!"
+        fi
     fi
 
     # Install GNU Make 4.3
