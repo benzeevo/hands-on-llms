@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="student@lab-45e3f7c2-e1c4-4a03-b3e3-b17635f8b229.westeurope.cloudapp.azure.com:5047 password (2)" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="student@lab-45e3f7c2-e1c4-4a03-b3e3-b17635f8b229.westeurope.cloudapp.azure.com:5047 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_417" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="student@lab-45e3f7c2-e1c4-4a03-b3e3-b17635f8b229.westeurope.cloudapp.azure.com:5047 password (2)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_430" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
