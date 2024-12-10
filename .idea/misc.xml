@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Black">
-    <option name="sdkName" value="Python 3.8" />
-  </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.10.16 (sftp://student@lab-45e3f7c2-e1c4-4a03-b3e3-b17635f8b229.westeurope.cloudapp.azure.com:5047/usr/bin/python3)" project-jdk-type="Python SDK" />
 </project>
