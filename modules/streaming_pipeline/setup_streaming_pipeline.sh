@@ -23,6 +23,12 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Reconfigure all partially installed packages and fix dpkg state issues
+# This is essential if package installations or upgrades were interrupted
+log_message "Running dpkg to reconfigure packages..."
+sudo dpkg --configure -a || error_handle "Failed to run dpkg --configure -a"
+pause_and_continue "Reconfigured all partially installed packages and fix dpkg state issues"
+
 # Utility function for safe package installation
 safe_package_install() {
     local package="$1"
@@ -79,6 +85,11 @@ install_dependencies() {
     if ! command_exists poetry; then
         echo "Poetry is not installed. Installing Poetry..."
         curl -sSL https://install.python-poetry.org | python3.10 - || error_handle "Failed to install Poetry."
+
+        # Add Poetry to PATH
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc  # Reload the bash configuration to update PATH
+
         poetry self update 1.5.1 || error_handle "Failed to update Poetry to version 1.5.1."
         pause_and_continue "Poetry installed successfully."
     else
@@ -95,10 +106,37 @@ install_dependencies() {
     # Install GNU Make 4.3
     if ! command_exists make; then
         echo "GNU Make is not installed. Installing version 4.3..."
-        safe_package_install make=4.3*
-    elif [[ $(make --version | head -n 1) != *"4.3" ]]; then
+
+        # Download and install make 4.3
+        wget https://ftp.gnu.org/gnu/make/make-4.3.tar.gz -P /tmp
+        cd /tmp
+        tar -xzvf make-4.3.tar.gz
+        cd make-4.3
+        ./configure
+        make
+        sudo make install
+
+        # Update PATH to prioritize /usr/local/bin
+        export PATH="/usr/local/bin:$PATH"
+        echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+
+    elif [[ $(make --version | head -n 1) != *"4.3"* ]]; then
         pause_and_continue "GNU Make version is not 4.3. Updating to version 4.3..."
-        safe_package_install make=4.3*
+
+        # Download and install make 4.3
+        wget https://ftp.gnu.org/gnu/make/make-4.3.tar.gz -P /tmp
+        cd /tmp
+        tar -xzvf make-4.3.tar.gz
+        cd make-4.3
+        ./configure
+        make
+        sudo make install
+
+        # Update PATH to prioritize /usr/local/bin
+        export PATH="/usr/local/bin:$PATH"
+        echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
     else
         pause_and_continue "GNU Make version 4.3 is already installed."
     fi
