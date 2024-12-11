@@ -81,6 +81,12 @@ install_dependencies() {
     [[ -d "$VENV_DIR" ]] || python3.10 -m venv "$VENV_DIR"
     pause_and_continue "Virtual environment created at $VENV_DIR."
 
+    # Ensure PS1 is set to prevent unbound variable errors
+    if [ -z "${PS1+x}" ]; then
+        # Set a default PS1 if not already set
+        export PS1='\u@\h:\w\$ '
+    fi
+
     # Install Poetry
     if ! command_exists poetry; then
         echo "Poetry is not installed. Installing Poetry..."
@@ -104,12 +110,6 @@ install_dependencies() {
     fi
 
     # Install GNU Make 4.3
-    # Ensure PS1 is set to prevent unbound variable errors
-    if [ -z "${PS1+x}" ]; then
-        # Set a default PS1 if not already set
-        export PS1='\u@\h:\w\$ '
-    fi
-
     if ! command_exists make; then
         echo "GNU Make is not installed. Installing version 4.3..."
         # Download and install make 4.3
