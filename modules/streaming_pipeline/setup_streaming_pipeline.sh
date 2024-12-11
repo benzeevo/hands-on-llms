@@ -104,9 +104,14 @@ install_dependencies() {
     fi
 
     # Install GNU Make 4.3
+    # Ensure PS1 is set to prevent unbound variable errors
+    if [ -z "${PS1+x}" ]; then
+        # Set a default PS1 if not already set
+        export PS1='\u@\h:\w\$ '
+    fi
+
     if ! command_exists make; then
         echo "GNU Make is not installed. Installing version 4.3..."
-
         # Download and install make 4.3
         wget https://ftp.gnu.org/gnu/make/make-4.3.tar.gz -P /tmp
         cd /tmp
@@ -115,15 +120,14 @@ install_dependencies() {
         ./configure
         make
         sudo make install
-
         # Update PATH to prioritize /usr/local/bin
         export PATH="/usr/local/bin:$PATH"
         echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
-        source ~/.bashrc
 
+        # Reload bash configuration
+        source ~/.bashrc
     elif [[ $(make --version | head -n 1) != *"4.3"* ]]; then
         pause_and_continue "GNU Make version is not 4.3. Updating to version 4.3..."
-
         # Download and install make 4.3
         wget https://ftp.gnu.org/gnu/make/make-4.3.tar.gz -P /tmp
         cd /tmp
@@ -132,10 +136,11 @@ install_dependencies() {
         ./configure
         make
         sudo make install
-
         # Update PATH to prioritize /usr/local/bin
         export PATH="/usr/local/bin:$PATH"
         echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+
+        # Reload bash configuration
         source ~/.bashrc
     else
         pause_and_continue "GNU Make version 4.3 is already installed."
