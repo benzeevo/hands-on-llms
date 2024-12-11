@@ -101,7 +101,13 @@ install_dependencies() {
 
     # Update to specific version
     poetry self update 1.5.1 || error_handle "Failed to update Poetry"
-    pause_and_continue "Poetry 1.5.1 installed."
+    # Verify Poetry version
+    current_version=$(poetry --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+')
+    if [ "$current_version" == "1.5.1" ]; then
+        pause_and_continue "Poetry 1.5.1 installed successfully."
+    else
+        error_handle "Poetry installation failed or the version is incorrect. Expected version 1.5.1, got $current_version."
+    fi
 
     # Install GNU Make 4.3
     if ! command_exists make; then
