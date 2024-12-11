@@ -158,7 +158,7 @@ install_dependencies() {
 }
 
 # Azure Setup
-configure_azure() {
+#configure_azure() {
     #log_message "Configuring Azure Setup"
 
     # Install Azure CLI
@@ -193,7 +193,7 @@ configure_azure() {
 
     #log_message "Azure configuration completed"
     #pause_and_continue "Azure credentials added to .env file."
-}
+#}
 
 # Docker Setup and Build
 configure_docker() {
