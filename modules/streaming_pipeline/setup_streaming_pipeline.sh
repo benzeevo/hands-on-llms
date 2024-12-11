@@ -81,38 +81,22 @@ install_dependencies() {
     [[ -d "$VENV_DIR" ]] || python3.10 -m venv "$VENV_DIR"
     pause_and_continue "Virtual environment created at $VENV_DIR."
 
-    # Ensure PS1 is set to prevent unbound variable errors
-    if [ -z "${PS1+x}" ]; then
-        # Set a default PS1 if not already set
-        export PS1='\u@\h:\w\$ '
-    fi
+    # Ensure PS1 is set
+    export PS1="${PS1:-\u@\h:\w\$ }"
 
-    # Install Poetry
-    if ! command_exists poetry; then
-        echo "Poetry is not installed. Installing Poetry..."
-        curl -sSL https://install.python-poetry.org | python3.10 - || error_handle "Failed to install Poetry."
-
-        # Fix debian_chroot issue again after modifying .bashrc
-        if [ -z "$debian_chroot" ] && [ -e /usr/bin/debian_chroot ]; then
-            debian_chroot=$(debian_chroot)
-        fi
+    # Check and install Poetry
+    if ! command -v poetry &> /dev/null; then
+        echo "Installing Poetry..."
+        curl -sSL https://install.python-poetry.org | python3 - || error_handle "Failed to install Poetry"
 
         # Add Poetry to PATH
+        export PATH="$HOME/.local/bin:$PATH"
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-        source ~/.bashrc  # Reload the bash configuration to update PATH
-
-        poetry self update 1.5.1 || error_handle "Failed to update Poetry to version 1.5.1."
-        pause_and_continue "Poetry installed successfully."
-    else
-        current_version=$(poetry --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+')
-        if [ "$current_version" != "1.5.1" ]; then
-            echo "Updating Poetry to version 1.5.1..."
-            poetry self update 1.5.1 || error_handle "Failed to update Poetry to version 1.5.1."
-            pause_and_continue "Poetry updated successfully."
-        else
-            pause_and_continue "Poetry version 1.5.1 is already installed. Everything is fine!"
-        fi
     fi
+
+    # Update to specific version
+    poetry self update 1.5.1 || error_handle "Failed to update Poetry"
+    pause_and_continue "Poetry 1.5.1 installed."
 
     # Install GNU Make 4.3
     if ! command_exists make; then
