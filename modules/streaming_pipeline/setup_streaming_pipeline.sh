@@ -167,32 +167,32 @@ configure_azure() {
     #pause_and_continue "Azure CLI login completed."
 
     # Retrieve Azure VM details
-    local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
-    local profile=$(az account show --query name -o tsv)
+    #local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
+    #local profile=$(az account show --query name -o tsv)
 
     # Retrieve Azure VM details
-    local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
-    local profile=$(az account show --query name -o tsv)
+    #local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
+    #local profile=$(az account show --query name -o tsv)
 
     # Print detailed information about the variables
-    echo "==================== Azure VM Details ===================="
-    echo "The following details are retrieved from the Azure VM instance and account:"
-    echo ""
-    echo "Azure Region (location where the VM is deployed): $region"
-    echo "Azure Profile (currently active Azure account): $profile"
-    echo ""
-    echo "==========================================================="
+    #echo "==================== Azure VM Details ===================="
+    #echo "The following details are retrieved from the Azure VM instance and account:"
+    #echo ""
+    #echo "Azure Region (location where the VM is deployed): $region"
+    #echo "Azure Profile (currently active Azure account): $profile"
+    #echo ""
+    #echo "==========================================================="
 
     # Update .env file with Azure credentials
-    cat <<EOL >> .env
+    #cat <<EOL >> .env
 
 # Azure Credentials
-export AZURE_REGION="$region"
-export AZURE_PROFILE="$profile"
-EOL
+#export AZURE_REGION="$region"
+#export AZURE_PROFILE="$profile"
+#EOL
 
-    log_message "Azure configuration completed"
-    pause_and_continue "Azure credentials added to .env file."
+    #log_message "Azure configuration completed"
+    #pause_and_continue "Azure credentials added to .env file."
 }
 
 # Docker Setup and Build
@@ -227,7 +227,7 @@ main() {
     pause_and_continue "if your .env file not ready, fix it, and come back"
 
     install_dependencies
-    configure_azure
+    #configure_azure
 
     # Run pipeline in batch mode
     make run_batch
