@@ -148,7 +148,7 @@ install_dependencies() {
 
     # This script installs dependencies for the project
     echo "Installing all dependencies..."
-    make install
+    sudo make install
 
     #echo "Installing development dependencies..."
     #make install_dev
@@ -159,16 +159,29 @@ install_dependencies() {
 
 # Azure Setup
 configure_azure() {
-    log_message "Configuring Azure Setup"
+    #log_message "Configuring Azure Setup"
 
     # Install Azure CLI
-    safe_package_install azure-cli
-    az login
-    pause_and_continue "Azure CLI login completed."
+    #safe_package_install azure-cli
+    #az login
+    #pause_and_continue "Azure CLI login completed."
 
     # Retrieve Azure VM details
     local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
     local profile=$(az account show --query name -o tsv)
+
+    # Retrieve Azure VM details
+    local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
+    local profile=$(az account show --query name -o tsv)
+
+    # Print detailed information about the variables
+    echo "==================== Azure VM Details ===================="
+    echo "The following details are retrieved from the Azure VM instance and account:"
+    echo ""
+    echo "Azure Region (location where the VM is deployed): $region"
+    echo "Azure Profile (currently active Azure account): $profile"
+    echo ""
+    echo "==========================================================="
 
     # Update .env file with Azure credentials
     cat <<EOL >> .env
@@ -210,6 +223,9 @@ deploy_to_azure() {
 
 # Main Execution
 main() {
+
+    pause_and_continue "if your .env file not ready, fix it, and come back"
+
     install_dependencies
     configure_azure
 
