@@ -81,6 +81,11 @@ install_dependencies() {
     [[ -d "$VENV_DIR" ]] || python3.10 -m venv "$VENV_DIR"
     pause_and_continue "Virtual environment created at $VENV_DIR."
 
+    # Explicitly set debian_chroot only if not already set
+    if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+        debian_chroot=$(cat /etc/debian_chroot)
+    fi
+
     # Ensure PS1 is set
     export PS1="${PS1:-\u@\h:\w\$ }"
 
