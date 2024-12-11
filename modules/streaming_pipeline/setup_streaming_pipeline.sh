@@ -92,6 +92,11 @@ install_dependencies() {
         echo "Poetry is not installed. Installing Poetry..."
         curl -sSL https://install.python-poetry.org | python3.10 - || error_handle "Failed to install Poetry."
 
+        # Fix debian_chroot issue again after modifying .bashrc
+        if [ -z "$debian_chroot" ] && [ -e /usr/bin/debian_chroot ]; then
+            debian_chroot=$(debian_chroot)
+        fi
+
         # Add Poetry to PATH
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
         source ~/.bashrc  # Reload the bash configuration to update PATH
