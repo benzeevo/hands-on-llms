@@ -148,7 +148,7 @@ install_dependencies() {
 
     # This script installs dependencies for the project
     echo "Installing all dependencies..."
-    sudo make install
+    make install
 
     #echo "Installing development dependencies..."
     #make install_dev
