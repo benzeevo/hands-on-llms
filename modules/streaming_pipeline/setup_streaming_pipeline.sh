@@ -146,6 +146,13 @@ install_dependencies() {
         pause_and_continue "GNU Make version 4.3 is already installed."
     fi
 
+    # This script installs dependencies for the project
+    echo "Installing all dependencies..."
+    make install
+
+    #echo "Installing development dependencies..."
+    #make install_dev
+
     log_message "Dependency Installation Completed Successfully"
     pause_and_continue "All dependencies have been installed."
 }
