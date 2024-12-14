@@ -23,12 +23,6 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Reconfigure all partially installed packages and fix dpkg state issues
-# This is essential if package installations or upgrades were interrupted
-log_message "Running dpkg to reconfigure packages..."
-sudo dpkg --configure -a || error_handle "Failed to run dpkg --configure -a"
-pause_and_continue "Reconfigured all partially installed packages and fix dpkg state issues"
-
 # Utility function for safe package installation
 safe_package_install() {
     local package="$1"
@@ -44,6 +38,12 @@ safe_package_install() {
 # Dependency Installation Process
 install_dependencies() {
     log_message "Starting Dependency Installation"
+
+    # Reconfigure all partially installed packages and fix dpkg state issues
+    # This is essential if package installations or upgrades were interrupted
+    log_message "Running dpkg to reconfigure packages..."
+    sudo dpkg --configure -a || error_handle "Failed to run dpkg --configure -a"
+    pause_and_continue "Reconfigured all partially installed packages and fix dpkg state issues"
 
     # Verify system compatibility
     [[ -x "$(command -v apt-get)" ]] || error_handle "This script requires a Debian/Ubuntu-based system"
@@ -158,42 +158,42 @@ install_dependencies() {
 }
 
 # Azure Setup
-#configure_azure() {
-    #log_message "Configuring Azure Setup"
+configure_azure() {
+    log_message "Configuring Azure Setup"
 
-    # Install Azure CLI
-    #safe_package_install azure-cli
-    #az login
-    #pause_and_continue "Azure CLI login completed."
+     Install Azure CLI
+    safe_package_install azure-cli
+    az login
+    pause_and_continue "Azure CLI login completed."
 
-    # Retrieve Azure VM details
-    #local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
-    #local profile=$(az account show --query name -o tsv)
+     Retrieve Azure VM details
+    local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
+    local profile=$(az account show --query name -o tsv)
 
-    # Retrieve Azure VM details
-    #local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
-    #local profile=$(az account show --query name -o tsv)
+     Retrieve Azure VM details
+    local region=$(curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/compute?api-version=2021-02-01" | jq -r '.location')
+    local profile=$(az account show --query name -o tsv)
 
-    # Print detailed information about the variables
-    #echo "==================== Azure VM Details ===================="
-    #echo "The following details are retrieved from the Azure VM instance and account:"
-    #echo ""
-    #echo "Azure Region (location where the VM is deployed): $region"
-    #echo "Azure Profile (currently active Azure account): $profile"
-    #echo ""
-    #echo "==========================================================="
+     Print detailed information about the variables
+    echo "==================== Azure VM Details ===================="
+    echo "The following details are retrieved from the Azure VM instance and account:"
+    echo ""
+    echo "Azure Region (location where the VM is deployed): $region"
+    echo "Azure Profile (currently active Azure account): $profile"
+    echo ""
+    echo "==========================================================="
 
-    # Update .env file with Azure credentials
-    #cat <<EOL >> .env
+     Update .env file with Azure credentials
+    cat <<EOL >> .env
 
-# Azure Credentials
-#export AZURE_REGION="$region"
-#export AZURE_PROFILE="$profile"
-#EOL
+ Azure Credentials
+export AZURE_REGION="$region"
+export AZURE_PROFILE="$profile"
+EOL
 
-    #log_message "Azure configuration completed"
-    #pause_and_continue "Azure credentials added to .env file."
-#}
+    log_message "Azure configuration completed"
+    pause_and_continue "Azure credentials added to .env file."
+}
 
 # Docker Setup and Build
 configure_docker() {
@@ -226,16 +226,16 @@ main() {
 
     pause_and_continue "if your .env file not ready, fix it, and come back"
 
-    install_dependencies
+    #install_dependencies
     #configure_azure
 
     # Run pipeline in batch mode
-    make run_batch
-    pause_and_continue "Batch pipeline run completed."
+    #make run_batch
+    #pause_and_continue "Batch pipeline run completed."
 
     # Run streaming pipeline
-    make run_real_time
-    pause_and_continue "Real-time streaming pipeline run completed."
+    #make run_real_time
+    #pause_and_continue "Real-time streaming pipeline run completed."
 
     # Sanity checks
     local QUERY="What is the latest financial news about Tesla?"
