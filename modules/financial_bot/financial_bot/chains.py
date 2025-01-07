@@ -13,6 +13,11 @@ from unstructured.cleaners.core import (
     group_broken_paragraphs,
     replace_unicode_quotes,
 )
+import os
+import openai
+import json
+import atexit
+
 
 from financial_bot.embeddings import EmbeddingModelSingleton
 from financial_bot.template import PromptTemplate
@@ -95,7 +100,7 @@ class ContextExtractorChain(Chain):
         The name of the collection to search in the vector store.
     """
 
-    top_k: int = 1
+    top_k: int = 10
     embedding_model: EmbeddingModelSingleton
     vector_store: qdrant_client.QdrantClient
     vector_collection: str
