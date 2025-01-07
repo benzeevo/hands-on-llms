@@ -18,7 +18,12 @@ add:
 
 add_dev:
 	PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry add --group dev $(package)
+	
+eval_bot:
+	@echo "Evaluating financial_bot..."
 
+	poetry run python -m tools.bot_eval \
+		--testset_path "../training_pipeline/dataset/testing_data.json"
 
 # === Run ===
 
